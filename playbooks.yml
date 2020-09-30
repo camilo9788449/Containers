@@ -1,0 +1,21 @@
+---
+- hosts: slave
+  become: yes
+  tasks:
+    - name: Harden sshd
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      loop:
+        - regexp: "^PermitRootLogin"
+          line: "PermitRootLofin without-password"
+        - regexp: "^PasswordAuthentication"
+          line: "PasswordAuthentication no"
+        - regexp: "^X11Forwarding"
+          line: "X11Forwarding no"
+        - regexp: "^PermitEmptyPasswords"
+          line: "PermitEmptyPasswords no"
+        - regexp: "^MaxAuthTries"
+          line: "MaxAuthTries 4"   
